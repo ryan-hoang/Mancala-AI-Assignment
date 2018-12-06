@@ -26,6 +26,25 @@
 ;; (in-package :sean-luke)
 
 
+;;Taken from the previous assignment's utilities.lisp to simplify the code and make it easier to read.
+(defmacro for-each (var in list do &body body)
+  "Execute body for each element of list.  VAR can be a list or tree
+  of variables, in which case the elements are destructured."
+  (assert (eq in 'in)) (assert (eq do 'do))
+  (typecase var
+    (symbol `(dolist (,var ,list) ,@body))
+    (cons (let ((list-var (gensym)))
+	    `(dolist (,list-var ,list)
+	       (destructuring-bind ,var ,list-var ,@body))))
+    (t (error "~V is an illegal variable in (for each ~V in ~A ...)"
+	      var list))))
+
+
+;;Helper         
+(defun maxturnp (s max-player)
+  (if (equalp max-player (state-turn s)) T Nil))        
+
+
 ;;;; Once you've done this, you need to write your code.  Here
 ;;;; is a rough sketch of three functions you will find handy.
 ;;;; You don't need to implement them like this, except for the
@@ -35,14 +54,37 @@
 ;;;; function is stronger than just comparing the differences in
 ;;;; the mancalas.
 
-(defun alpha-beta (state current-depth max-depth max-player expand terminal evaluate alpha beta)
+(defun alpha-beta (state depth maxdepth maxplayer expand terminal evaluate alpha beta)
  "Does alpha-beta search.  Note that there is the addition of
 a variable called MAX-PLAYER rather than a function which specifies
 if it's max's turn.  It's just more convenient in this system.
 The MAX-PLAYER variable is set to either *player-1*
 or to *player-2* and indicates if *player-1* or *player-2* should
 be considered 'max' (the other player is then considered to be 'min')"
-
+  (let* 
+    ((children (funcall expand state)))
+    (if (or (funcall terminal state) (>= depth maxdepth)) (return-from alpha-beta (funcall evaluate state maxplayer)))
+    (if (maxturnp state maxplayer)
+        (for-each child in children do 
+            (let*
+              (
+                (mm (alpha-beta child (+ 1 depth) maxdepth maxplayer expand terminal evaluate alpha beta))
+                (a (max alpha mm))
+              )
+              (if (>= a beta) (return-from alpha-beta beta) (return-from alpha-beta a))
+            )
+        )
+        (for-each child in children do 
+            (let*
+              (
+                (mm (alpha-beta child (+ 1 depth) maxdepth maxplayer expand terminal evaluate alpha beta))
+                (b (min beta mm))
+              )
+              (if (>= alpha b) (return-from alpha-beta alpha) (return-from alpha-beta b))
+            )
+        )
+    )
+  )
 )
 
 (defun evaluate (state max-player)
