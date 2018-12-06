@@ -88,16 +88,18 @@ be considered 'max' (the other player is then considered to be 'min')"
 )
 
 
-;;score+relative_score*.03
+;;mancalas in your pit + relative_score*.03
 
 (defun evaluate (state max-player)
  "Evaluates the game situation for MAX-PLAYER.
 Returns the value of STATE for MAX-PLAYER (who
 is either *player-1* or *player-2*).  This should
 be a value ranging from *min-wins* to *max-wins*."
-(return-from evaluate (+ (score state) (* 0.3 (- (score state max-player) (score state (other-player max-player))))))
+(return-from evaluate (+ (elt state-board (mancala-pit max-player)) (* 0.3 (- (score state max-player) (score state (other-player max-player))))))
 )
 
+
+;(defun alpha-beta (state depth maxdepth maxplayer expand terminal evaluate alpha beta)
 (defun computer-make-move (state max-depth)
  "Given a state, makes a move and returns the new state.
 If there is no move to make (end of game) returns nil.
@@ -111,18 +113,21 @@ that he is the player who's turn it is right now in STATE"
       (
         (current-turn (state-turn state))
         (possible-moves (moves state))
+        (best-move nil)
+        (best-score nil)
       )
       (if (game-overp state) 
-          (return-from computer-make-move Nil)
-          (for-each move in possible-moves do 
-              
+          (return-from computer-make-move nil)
+          (for-each move-state in possible-moves do 
+              (let* 
+                  ((move-score (alpha-beta move-state 0 max-depth current-turn #'moves #'game-overp #'evaluate *min-wins* *max-wins*)))
+              (print-state move-state)
+              (if (> move-score best-score) (progn (setf best-score move-score) (setf best-move move-state)))
             
           )
-      
-      
-      
-      
+        )
       )
+      
   )
 )
 
