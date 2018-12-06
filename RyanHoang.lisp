@@ -87,11 +87,15 @@ be considered 'max' (the other player is then considered to be 'min')"
   )
 )
 
+
+;;score+relative_score*.03
+
 (defun evaluate (state max-player)
  "Evaluates the game situation for MAX-PLAYER.
 Returns the value of STATE for MAX-PLAYER (who
 is either *player-1* or *player-2*).  This should
 be a value ranging from *min-wins* to *max-wins*."
+(return-from evaluate (+ (score state) (* 0.3 (- (score state max-player) (score state (other-player max-player))))))
 )
 
 (defun computer-make-move (state max-depth)
@@ -103,6 +107,23 @@ computer-make-move should print out the state (using PRINT,
 not PRINT-STATE) that is being searched.
 Only search up to max-depth.  The computer should assume
 that he is the player who's turn it is right now in STATE"
+  (let*
+      (
+        (current-turn (state-turn state))
+        (possible-moves (moves state))
+      )
+      (if (game-overp state) 
+          (return-from computer-make-move Nil)
+          (for-each move in possible-moves do 
+              
+            
+          )
+      
+      
+      
+      
+      )
+  )
 )
 
 ;;;; In comments your file, you put your project notes.
