@@ -45,27 +45,27 @@ be considered 'max' (the other player is then considered to be 'min')"
 
 )
 
-;; (defun evaluate (state max-player)
-;;   "Evaluates the game situation for MAX-PLAYER.
-;; Returns the value of STATE for MAX-PLAYER (who
-;; is either *player-1* or *player-2*).  This should
-;; be a value ranging from *min-wins* to *max-wins*."
-;; )
+(defun evaluate (state max-player)
+ "Evaluates the game situation for MAX-PLAYER.
+Returns the value of STATE for MAX-PLAYER (who
+is either *player-1* or *player-2*).  This should
+be a value ranging from *min-wins* to *max-wins*."
+)
 
-;; (defun computer-make-move (state max-depth)
-;;   "Given a state, makes a move and returns the new state.
-;; If there is no move to make (end of game) returns nil.
-;; Each time this function calls the top-level
-;; alpha-beta function to search for the quality of a state,
-;; computer-make-move should print out the state (using PRINT,
-;; not PRINT-STATE) that is being searched.
-;; Only search up to max-depth.  The computer should assume
-;; that he is the player who's turn it is right now in STATE"
-;; )
+(defun computer-make-move (state max-depth)
+ "Given a state, makes a move and returns the new state.
+If there is no move to make (end of game) returns nil.
+Each time this function calls the top-level
+alpha-beta function to search for the quality of a state,
+computer-make-move should print out the state (using PRINT,
+not PRINT-STATE) that is being searched.
+Only search up to max-depth.  The computer should assume
+that he is the player who's turn it is right now in STATE"
+)
 
 ;;;; In comments your file, you put your project notes.
 
 ;;;; The last thing in your file should be this line (uncommented
 ;;;; of course).
 
-;; (in-package :cl-user)
+(in-package :cl-user)
