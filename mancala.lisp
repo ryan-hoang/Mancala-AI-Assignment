@@ -83,9 +83,7 @@
 ;; by letting him have a depth of 10 while I have a depth of 5, and letting
 ;; him go first, as:
 
-;; (tournament 10 5
-;; 	    #'sanjeev-setia:computer-make-move
-;; 	    #'sean-luke:computer-make-move)
+;; (tournament 10 10 #'ryanhoang:computer-make-move #'dumbai:computer-make-move)
 
 
 ;; LOADING FILES

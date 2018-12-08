@@ -2,10 +2,10 @@
 ;;;;CS480 Fall 2018
 ;;;;Assignment 5
 
-(defpackage :RyanHoang
+(defpackage :dumbai
    (:use :common-lisp-user :common-lisp)
    (:export computer-make-move))
-(in-package :RyanHoang)
+(in-package :dumbai)
 
 ;;;; Here is a description of the stuff that would go into your
 ;;;; file.
@@ -26,7 +26,7 @@
 ;; (in-package :sean-luke)
 
 
-;;Taken from the previous assignment's provided utilities.lisp to simplify the code and make it easier to read.
+;;Taken from the previous assignment's utilities.lisp to simplify the code and make it easier to read.
 (defmacro for-each (var in list do &body body)
   "Execute body for each element of list.  VAR can be a list or tree
   of variables, in which case the elements are destructured."
@@ -88,20 +88,14 @@ be considered 'max' (the other player is then considered to be 'min')"
 )
 
 
-
+;;mancalas in your pit + relative_score*.03
 
 (defun evaluate (state max-player)
  "Evaluates the game situation for MAX-PLAYER.
 Returns the value of STATE for MAX-PLAYER (who
 is either *player-1* or *player-2*).  This should
 be a value ranging from *min-wins* to *max-wins*."
-(let* 
-  (
-    (pebble-victory (+ 1 (/ (* *initial-stones-per-pit* *num-pits*) 2))) ; half +1
-    (my-pebbles (elt (state-board state) (mancala-pit max-player)))
-    (their-pebbles (elt (state-board state) (mancala-pit (other-player max-player))))
-  )
-(return-from evaluate (+ (* 29 (score state max-player)) (* 19 (abs (- pebble-victory my-pebbles))) (* 19 (abs (- pebble-victory their-pebbles))) (if (equalp max-player (state-turn state)) 19 0) )) ))
+(return-from evaluate (score state max-player)))
 
 
 ;(defun alpha-beta (state depth maxdepth maxplayer expand terminal evaluate alpha beta)
